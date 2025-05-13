@@ -3,8 +3,7 @@ public class BanList{
 
 private ArrayList<Word> currentlyBanned=new ArrayList<Word>();
 private ArrayList<Word> everBanned=new ArrayList<Word>();   
-public BanList(String test){
-
+public BanList(){
 }
 
 public void banning(String incomingWord){
@@ -35,7 +34,7 @@ else
  {
   boolean found=false;
   for (int i=0;i<currentlyBanned.size();i++){
-  if (adding.equals(currentlyBanned(i).getWord()))
+  if (adding.getWord().equals(currentlyBanned.get(i).getWord()))
     {
       currentlyBanned.get(i).earlyRemove();
       currentlyBanned.remove(i);
@@ -45,7 +44,7 @@ else
    }
    if (!(found))
    {
-    if (currentList.size()>9)
+    if (currentlyBanned.size()>9)
     {
      currentlyBanned.get(0).earlyRemove();
      currentlyBanned.remove(0);
@@ -61,12 +60,11 @@ else
  }
 
 public void passPeriod(){
-for (int i=0;i<currentList.size();i++){
-    Word current=currentList.get(i);
-    current.dayPass;
-    if (current.doRemove()){
-    current.earlyRemove();
-    currentList.remove(i);
+for (int i=0;i<currentlyBanned.size();i++){
+    currentlyBanned.get(i).dayPass();
+    if (currentlyBanned.get(i).doRemove()){
+    currentlyBanned.get(i).earlyRemove();
+    currentlyBanned.remove(i);
     i--;
     }
 }
