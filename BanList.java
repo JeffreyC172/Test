@@ -1,11 +1,11 @@
-import java.utils.ArrayList;
+import java.util.ArrayList;
 public class BanList{
 
 private ArrayList<Word> currentlyBanned=new ArrayList<Word>();
 private ArrayList<Word> everBanned=new ArrayList<Word>();   
-public void Banlist()(
+public BanList(String test){
 
-)
+}
 
 public void banning(String incomingWord){
 boolean isNew=true;
@@ -15,7 +15,7 @@ if (isNew){
 addList(newWord,true, incomingWord);
 }
 else{
-incomingWord.ban();
+newWord.ban();
 addList(newWord, false,incomingWord);
 }
 }
@@ -24,7 +24,7 @@ public void addList(Word adding, boolean isNew, String reBan)
  {
 if (isNew)
   {
-if (currentList.size()>9)
+if (currentlyBanned.size()>9)
    {
 currentlyBanned.get(0).earlyRemove();
 currentlyBanned.remove(0);
@@ -34,8 +34,8 @@ currentlyBanned.add(adding);
 else
  {
   boolean found=false;
-  for (int i=0;i=currentList.size();i++){
-  if (incomingWord.equals(currentlyBanned(i).getWord()))
+  for (int i=0;i<currentlyBanned.size();i++){
+  if (adding.equals(currentlyBanned(i).getWord()))
     {
       currentlyBanned.get(i).earlyRemove();
       currentlyBanned.remove(i);
