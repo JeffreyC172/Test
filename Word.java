@@ -3,7 +3,7 @@ public class Word
 private String bannedWord="";
 private int timesBanned=1;
 private int daysSinceBan=0;
-private boolean banned;
+private boolean banned = false;
 
 public Word(String bannedWord)
  {
@@ -18,6 +18,7 @@ return timesBanned;
 
 public void ban(){
 timesBanned++;
+daysSinceBan=0;
 banned=true;
  }
 
@@ -44,7 +45,7 @@ return bannedWord;
  }
 
 public String wordData(){
-return "Word: " + bannedWord + ". Is banned: " + banned + ". Banned" + timesBanned + "times.";
+return "Word: " + bannedWord + ". Is banned: " + banned + ". Banned:" + timesBanned + "times.";
 }
 
 public void earlyRemove(){
