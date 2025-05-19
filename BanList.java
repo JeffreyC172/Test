@@ -8,64 +8,74 @@ public BanList(){
 
 public void banning(String incomingWord){
 boolean isNew=true;
-Word newWord =new Word(incomingWord);
 for (int i=0;i<everBanned.size();i++) if (everBanned.get(i).getWord().equals(incomingWord)) isNew=false;
 if (isNew){
-  System.out.println(incomingWord+": procced isNew");
-addList(newWord,true, incomingWord);
+  System.out.println(incomingWord+" is a new word.");
+addList(true, incomingWord);
 }
 else{
-System.out.println(incomingWord+": increment");
-addList(newWord, false,incomingWord);
+System.out.println(incomingWord+" is rebanned.");
+addList(false,incomingWord);
 }
 }
 
-public void addList(Word adding, boolean isNew, String reBan)
+public void addList(boolean isNew, String reBan)
  {
 if (isNew)
   {
-    everBanned.add(adding);
+    Word newWord =new Word(reBan);
+    everBanned.add(newWord);
 if (currentlyBanned.size()>9)
    {
-// System.out.println("before get");
+  System.out.println("adding over cap");
 currentlyBanned.get(0).earlyRemove();
-// System.out.println("before removed");
 currentlyBanned.remove(0);
- //System.out.println("before added");
-currentlyBanned.add(adding);
+currentlyBanned.add(newWord);
    }
    else
    {
-   System.out.println("adding less than 9");
-currentlyBanned.add(adding);
+   System.out.println("adding");
+currentlyBanned.add(newWord);
    }
   }
+
 else
  {
+  System.out.println("incrementtest1");
   boolean found=false;
   for (int i=0;i<currentlyBanned.size();i++){
-  if (adding.getWord().equals(currentlyBanned.get(i).getWord()))
+  if (reBan.equals(currentlyBanned.get(i).getWord()))
     {
+      Word temp=currentlyBanned.get(i);
       currentlyBanned.get(i).earlyRemove();
       currentlyBanned.remove(i);
-      currentlyBanned.add(adding);
+      currentlyBanned.add(temp);
       currentlyBanned.get(currentlyBanned.size()-1).ban();
       found=true;
+      i=currentlyBanned.size();
     }
    }
-   if (!(found))
+   if (!(found))  
    {
-    if (currentlyBanned.size()>9)
+    for (int i=0;i<everBanned.size();i++){
+    if (everBanned.get(i).getWord().equals(reBan)){
+       if (currentlyBanned.size()>9)
     {
      currentlyBanned.get(0).earlyRemove();
      currentlyBanned.remove(0);
-     currentlyBanned.add(adding);
+     currentlyBanned.add(everBanned.get(i));
+     System.out.println("banned due to not being in currentlybanned and size overflow");
+     everBanned.get(i).ban();
     }
+    else
+    {
+     currentlyBanned.add(everBanned.get(i));
+      System.out.println("banned due to not being in currentlybanned");
+     everBanned.get(i).ban();
+    }
+    }
+
    }
-   for (Word find: everBanned){
-    if (find.getWord().equals(reBan)){
-        find.ban();
-    }
    }
   }
  }

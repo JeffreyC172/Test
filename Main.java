@@ -2,16 +2,16 @@ import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
     BanList test = new BanList();
-    test.banning("potato");
+    test.banning("one");
     System.out.println(test.current());
-    test.banning("potato");
+    test.banning("one");
     System.out.println(test.current());
-  //  System.out.println(test);
-    test.banning("abbles");
+    test.banning("two");
     System.out.println(test.current());
-    test.banning("potato");
+    test.banning("one");
     System.out.println(test.current());
-    
+    System.out.println(test);
+
     String close="";
     while (!(close.equals("close")))
     {
@@ -36,10 +36,6 @@ public class Main{
     if (ban){
         test.banning(close);
     }
-    
-
-
     }
-
     }
 }
