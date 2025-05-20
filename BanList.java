@@ -10,11 +10,9 @@ public void banning(String incomingWord){
 boolean isNew=true;
 for (int i=0;i<everBanned.size();i++) if (everBanned.get(i).getWord().equals(incomingWord)) isNew=false;
 if (isNew){
-  System.out.println(incomingWord+" is a new word.");
 addList(true, incomingWord);
 }
 else{
-System.out.println(incomingWord+" is rebanned.");
 addList(false,incomingWord);
 }
 }
@@ -27,21 +25,18 @@ if (isNew)
     everBanned.add(newWord);
 if (currentlyBanned.size()>9)
    {
-  System.out.println("adding over cap");
 currentlyBanned.get(0).earlyRemove();
 currentlyBanned.remove(0);
 currentlyBanned.add(newWord);
    }
    else
    {
-   System.out.println("adding");
 currentlyBanned.add(newWord);
    }
   }
 
 else
  {
-  System.out.println("incrementtest1");
   boolean found=false;
   for (int i=0;i<currentlyBanned.size();i++){
   if (reBan.equals(currentlyBanned.get(i).getWord()))
@@ -64,13 +59,11 @@ else
      currentlyBanned.get(0).earlyRemove();
      currentlyBanned.remove(0);
      currentlyBanned.add(everBanned.get(i));
-     System.out.println("banned due to not being in currentlybanned and size overflow");
      everBanned.get(i).ban();
     }
     else
     {
      currentlyBanned.add(everBanned.get(i));
-      System.out.println("banned due to not being in currentlybanned");
      everBanned.get(i).ban();
     }
     }
@@ -115,10 +108,7 @@ for (int i=0;i<currentlyBanned.size();i++){
   ret+=currentlyBanned.get(i);
   if (i<currentlyBanned.size()-1&&currentlyBanned.size()>0) ret+=" ";
 }
-ret+="\n";
-ret+="\n";
-ret+="Ever Banned";
-ret+="\n";
+ret+="\n \n Ever Banned \n";
 for (int i=0;i<everBanned.size();i++){
   ret+=everBanned.get(i);
   if (i<everBanned.size()-1&&everBanned.size()>0) ret+=" ";
