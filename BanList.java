@@ -93,6 +93,14 @@ for (int i=0;i<currentlyBanned.size();i++){
 return ret;
 }
 
+public int currentLength(){
+  return currentlyBanned.size();
+}
+
+public String wordAt(int i){
+  return currentlyBanned.get(i).getWord();
+}
+
 public String ever(){
   String ret="";
 for (int i=0;i<everBanned.size();i++){

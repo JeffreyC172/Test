@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.JDABuilder;
 public class Main extends ListenerAdapter
 {
      BanList test = new BanList(); //Banlist
+     char commandIdentifier='!';
     public static void main(String[] args) throws LoginException
     {
     
@@ -18,26 +19,38 @@ public class Main extends ListenerAdapter
 
     }
 
-    public void onMessageRecieved(MessageRecievedEvent event) {
+
+    public void onMessageRecieved(MessageRecievedEvent event) 
+    {
     String incMessage=event.getMessage().getContentDisplay();
     System.out.println(event.getAuthor().getname()+"sent: "+incMessage);
-
-
     String close=event.getMessage().getContentRaw();
-
     Boolean ban=true;
-    System.out.println("Enter word");
-    if (incMessage.equals("checkCurrentList")) {
-        System.out.println(test.current());
-        ban=false;
-    }
-    if (incMessage.equals("checkAllList")){
-         System.out.println(test.ever());
-   ban=false;
-    }
-    if (ban)
+    if (close.length()>0&&close.charAt(0)==commandIdentifier)
     {
-        test.banning(close);
+     System.out.println("Enter word");
+     if (close.contains("checkCurrentList")) 
+     {
+         System.out.println(test.current());
+     }
+     else if (close.contains("checkAllList"))
+     {
+          System.out.println(test.ever());
+     }
+     else if (close.contains("ban"))
+     {
+     test.banning(close.substring(5,close.length()));
+     }
     }
+    else
+    {
+     for (int i=0;i<test.currentLength();i++)
+      {
+         if (close.contains(test.wordAt(i)))
+         {
+            
+         }
+        }
     }
+ }
 }
