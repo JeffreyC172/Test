@@ -5,7 +5,7 @@ public class Word
     @SuppressWarnings("FieldMayBeFinal")
     private String bannedWord;
     private int timesBanned=1;
-    private int daysSinceBan=0;
+    private int hoursSinceBan=0;
     private boolean banned=true;
 
     public Word(String bannedWord)
@@ -22,9 +22,9 @@ public class Word
         timesBanned++;
     }
 
-    public void dayPass()
+    public void hourPass()
     {
-        daysSinceBan++;
+        hoursSinceBan++;
     }
 
     public boolean isBanned(){
@@ -33,7 +33,7 @@ public class Word
 
     public boolean doRemove()
     {
-        return daysSinceBan >= 7;
+        return hoursSinceBan >= 168;
     }
 
     public String getWord()
@@ -46,7 +46,7 @@ public class Word
     }
 
     public void earlyRemove(){
-        daysSinceBan=0;
+        hoursSinceBan=0;
         banned=false;
     }
 

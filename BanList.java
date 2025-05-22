@@ -4,10 +4,39 @@ import java.util.ArrayList;
 
 public class BanList {
 
-    private final ArrayList<Word> currentlyBanned = new ArrayList<>();
-    private final ArrayList<Word> everBanned = new ArrayList<>();
+    private ArrayList<Word> currentlyBanned = new ArrayList<>();
+    private ArrayList<Word> everBanned = new ArrayList<>();
+    private ArrayList<Users> currentlyPunished = new ArrayList<>();
+    private ArrayList<Users> trackedUsers = new ArrayList<>();
 
     public BanList() {
+    }
+
+    public void punish(String username, String userid){
+    boolean isNew = true;
+    int location=0;
+        for (int i;i<trackedUsers.size();i++) {
+            if (trackedUsers.get(i).getId().equals(userid)) {
+                isNew = false;
+                location=i;
+                break;
+            }
+        }
+        punishing(isNew, username, userid, location);
+    }
+
+    public int punishing(boolean newStatus, String username, String userid,int location){
+    if (newStatus) {
+            Users newUser = new Users(username, userid);
+            currentlyPunished.add(newUser);
+            trackedUsers.add(newUser);
+            return newUser.getNumViolations();
+        }
+    else {
+    currentlyPunished.add(trackedUsers.get(location));
+    trackedUsers.get(location).repeatOffense();
+    return trackedUsers.get(location).getNumViolations();
+    }
     }
 
     public void banning(String incomingWord) {
@@ -70,6 +99,15 @@ public class BanList {
             if (currentlyBanned.get(i).doRemove()) {
                 currentlyBanned.get(i).earlyRemove();
                 currentlyBanned.remove(i);
+                i--;
+            }
+        }
+        for (int i=0;i<currentlyPunished.size();i++)
+        {
+         currentlyPunished.get(i).hourPass();
+          if (currentlyPunished.get(i).doUnmute()) {
+                currentlyBanned.get(i).earlyRemove(); //fix
+                currentlyBanned.remove(i); //fix 
                 i--;
             }
         }
