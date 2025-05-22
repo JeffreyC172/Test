@@ -1,128 +1,120 @@
+package com.apcsa.democracybot;
+
 import java.util.ArrayList;
-public class BanList{
 
-private ArrayList<Word> currentlyBanned=new ArrayList<Word>();
-private ArrayList<Word> everBanned=new ArrayList<Word>();   
-public BanList(){
-}
+public class BanList {
 
-public void banning(String incomingWord){
-boolean isNew=true;
-for (int i=0;i<everBanned.size();i++) if (everBanned.get(i).getWord().equals(incomingWord)) isNew=false;
-if (isNew){
-addList(true, incomingWord);
-}
-else{
-addList(false,incomingWord);
-}
-}
+    private final ArrayList<Word> currentlyBanned = new ArrayList<>();
+    private final ArrayList<Word> everBanned = new ArrayList<>();
 
-public void addList(boolean isNew, String reBan)
- {
-if (isNew)
-  {
-    Word newWord =new Word(reBan);
-    everBanned.add(newWord);
-if (currentlyBanned.size()>9)
-   {
-currentlyBanned.get(0).earlyRemove();
-currentlyBanned.remove(0);
-currentlyBanned.add(newWord);
-   }
-   else
-   {
-currentlyBanned.add(newWord);
-   }
-  }
-
-else
- {
-  boolean found=false;
-  for (int i=0;i<currentlyBanned.size();i++){
-  if (reBan.equals(currentlyBanned.get(i).getWord()))
-    {
-      Word temp=currentlyBanned.get(i);
-      currentlyBanned.get(i).earlyRemove();
-      currentlyBanned.remove(i);
-      currentlyBanned.add(temp);
-      currentlyBanned.get(currentlyBanned.size()-1).ban();
-      found=true;
-      i=currentlyBanned.size();
-    }
-   }
-   if (!(found))  
-   {
-    for (int i=0;i<everBanned.size();i++){
-    if (everBanned.get(i).getWord().equals(reBan)){
-       if (currentlyBanned.size()>9)
-    {
-     currentlyBanned.get(0).earlyRemove();
-     currentlyBanned.remove(0);
-     currentlyBanned.add(everBanned.get(i));
-     everBanned.get(i).ban();
-    }
-    else
-    {
-     currentlyBanned.add(everBanned.get(i));
-     everBanned.get(i).ban();
-    }
+    public BanList() {
     }
 
-   }
-   }
-  }
- }
-
-public void passPeriod(){
-for (int i=0;i<currentlyBanned.size();i++){
-    currentlyBanned.get(i).dayPass();
-    if (currentlyBanned.get(i).doRemove()){
-    currentlyBanned.get(i).earlyRemove();
-    currentlyBanned.remove(i);
-    i--;
+    public void banning(String incomingWord) {
+        boolean isNew = true;
+        for (Word i : everBanned) {
+            if (i.getWord().equals(incomingWord)) {
+                isNew = false;
+                break;
+            }
+        }
+        addList(isNew, incomingWord);
     }
-}
-}
 
-public String current(){
-String ret="";
-for (int i=0;i<currentlyBanned.size();i++){
-  ret+=currentlyBanned.get(i).wordData();
-  if (i<currentlyBanned.size()-1&&currentlyBanned.size()>0) ret+=" ";
-}
-return ret;
-}
+    public void addList(boolean isNew, String reBan) {
+        if (isNew) {
+            Word newWord = new Word(reBan);
+            everBanned.add(newWord);
+            if (currentlyBanned.size() > 9) {
+                currentlyBanned.getFirst().earlyRemove();
+                currentlyBanned.removeFirst();
+                currentlyBanned.add(newWord);
+            } else {
+                currentlyBanned.add(newWord);
+            }
+        } else {
+            boolean found = false;
+            for (int i = 0; i < currentlyBanned.size(); i++) {
+                if (reBan.equals(currentlyBanned.get(i).getWord())) {
+                    Word temp = currentlyBanned.get(i);
+                    currentlyBanned.get(i).earlyRemove();
+                    currentlyBanned.remove(i);
+                    currentlyBanned.add(temp);
+                    currentlyBanned.getLast().ban();
+                    found = true;
+                    i = currentlyBanned.size();
+                }
+            }
+            if (!(found)) {
+                for (Word i : everBanned) {
+                    if (i.getWord().equals(reBan)) {
+                        if (currentlyBanned.size() > 9) {
+                            currentlyBanned.getFirst().earlyRemove();
+                            currentlyBanned.removeFirst();
+                            currentlyBanned.add(i);
+                            i.ban();
+                        } else {
+                            currentlyBanned.add(i);
+                            i.ban();
+                        }
+                    }
 
-public int currentLength(){
-  return currentlyBanned.size();
-}
+                }
+            }
+        }
+    }
 
-public String wordAt(int i){
-  return currentlyBanned.get(i).getWord();
-}
+    public void passPeriod() {
+        for (int i = 0; i < currentlyBanned.size(); i++) {
+            currentlyBanned.get(i).dayPass();
+            if (currentlyBanned.get(i).doRemove()) {
+                currentlyBanned.get(i).earlyRemove();
+                currentlyBanned.remove(i);
+                i--;
+            }
+        }
+    }
 
-public String ever(){
-  String ret="";
-for (int i=0;i<everBanned.size();i++){
-  ret+=everBanned.get(i).wordData();
-  if (i<everBanned.size()-1&&everBanned.size()>0) ret+=" ";
-}
-return ret;
-}
-public String toString(){
-  String ret="\n"+"Currently Banned";
-  ret+="\n";
-for (int i=0;i<currentlyBanned.size();i++){
-  ret+=currentlyBanned.get(i);
-  if (i<currentlyBanned.size()-1&&currentlyBanned.size()>0) ret+=" ";
-}
-ret+="\n \n Ever Banned \n";
-for (int i=0;i<everBanned.size();i++){
-  ret+=everBanned.get(i);
-  if (i<everBanned.size()-1&&everBanned.size()>0) ret+=" ";
-}
-return ret;
-}
+    public String current() {
+        StringBuilder ret = new StringBuilder();
+        for (int i = 0; i < currentlyBanned.size(); i++) {
+            ret.append(currentlyBanned.get(i).wordData());
+            if (i < currentlyBanned.size() - 1) ret.append(" ");
+        }
+        return ret.toString();
+    }
+
+    public int currentLength() {
+        return currentlyBanned.size();
+    }
+
+    public String wordAt(int i) {
+        return currentlyBanned.get(i).getWord();
+    }
+
+    public String ever() {
+        StringBuilder ret = new StringBuilder();
+        for (int i = 0; i < everBanned.size(); i++) {
+            ret.append(everBanned.get(i).wordData());
+            if (i < everBanned.size() - 1) ret.append(" ");
+        }
+        return ret.toString();
+    }
+
+    public String toString() {
+        StringBuilder ret = new StringBuilder("\n" + "Currently Banned");
+        ret.append("\n");
+        for (int i = 0; i < currentlyBanned.size(); i++) {
+            ret.append(currentlyBanned.get(i));
+            if (i < currentlyBanned.size() - 1) ret.append(" ");
+        }
+        ret.append("\n \n Ever Banned \n");
+        for (int i = 0; i < everBanned.size(); i++) {
+            ret.append(everBanned.get(i));
+            if (i < everBanned.size() - 1) ret.append(" ");
+        }
+        return ret.toString();
+    }
 
 
 }
